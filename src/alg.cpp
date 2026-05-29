@@ -26,13 +26,13 @@ void collectPermutations(Node* node, std::vector<char>& currentPath,
         currentPath.pop_back();
     }
 }
+
 std::vector<std::vector<char>> getAllPerms(const PMTree& tree) {
     std::vector<std::vector<char>> allPerms;
     std::vector<char> currentPath;
     collectPermutations(tree.getRoot(), currentPath, allPerms);
     return allPerms;
 }
-
 std::vector<char> getPerm1(const PMTree& tree, int num) {
     std::vector<std::vector<char>> allPerms = getAllPerms(tree);
     if (num < 1 || num > static_cast<int>(allPerms.size())) {
@@ -56,9 +56,10 @@ std::vector<char> getPerm2(const PMTree& tree, int num) {
     if (current == nullptr || current->children.empty()) {
         return result;
     }
-
     int k = num - 1;
-    int totalPerms = calculateFactorial(static_cast<int>(current->children.size()));
+    
+    int totalPerms = calculateFactorial(
+        static_cast<int>(current->children.size()));
 
     if (k < 0 || k >= totalPerms) {
         return std::vector<char>();
