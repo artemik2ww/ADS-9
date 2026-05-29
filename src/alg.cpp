@@ -9,11 +9,9 @@
 void collectPermutations(Node* node, std::vector<char>& currentPath,
                          std::vector<std::vector<char>>& allPerms) {
     if (node == nullptr) return;
-
     if (node->val != '*') {
         currentPath.push_back(node->val);
     }
-
     if (node->children.empty() && node->val != '*') {
         allPerms.push_back(currentPath);
     } else {
@@ -21,7 +19,6 @@ void collectPermutations(Node* node, std::vector<char>& currentPath,
             collectPermutations(node->children[i], currentPath, allPerms);
         }
     }
-
     if (node->val != '*') {
         currentPath.pop_back();
     }
@@ -33,6 +30,7 @@ std::vector<std::vector<char>> getAllPerms(const PMTree& tree) {
     collectPermutations(tree.getRoot(), currentPath, allPerms);
     return allPerms;
 }
+
 std::vector<char> getPerm1(const PMTree& tree, int num) {
     std::vector<std::vector<char>> allPerms = getAllPerms(tree);
     if (num < 1 || num > static_cast<int>(allPerms.size())) {
@@ -40,7 +38,6 @@ std::vector<char> getPerm1(const PMTree& tree, int num) {
     }
     return allPerms[num - 1];
 }
-
 int calculateFactorial(int n) {
     int fact = 1;
     for (int i = 1; i <= n; ++i) {
@@ -48,32 +45,24 @@ int calculateFactorial(int n) {
     }
     return fact;
 }
-
 std::vector<char> getPerm2(const PMTree& tree, int num) {
     std::vector<char> result;
     Node* current = tree.getRoot();
-
     if (current == nullptr || current->children.empty()) {
         return result;
     }
     int k = num - 1;
-    
     int totalPerms = calculateFactorial(
         static_cast<int>(current->children.size()));
-
     if (k < 0 || k >= totalPerms) {
         return std::vector<char>();
     }
-
     while (!current->children.empty()) {
         int branchCount = static_cast<int>(current->children.size());
         int permsPerBranch = totalPerms / branchCount;
-
         int index = k / permsPerBranch;
         current = current->children[index];
-
         result.push_back(current->val);
-
         k = k % permsPerBranch;
         totalPerms = permsPerBranch;
     }
